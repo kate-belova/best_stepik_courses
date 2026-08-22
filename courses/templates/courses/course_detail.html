@@ -1,0 +1,109 @@
+{% extends "index.html" %}
+
+{% block title %}
+    {{ course.title }}
+{% endblock %}
+
+{% block description %}
+    {{ course.description|striptags|truncatechars:160 }}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+
+        <div class="home-navigation">
+            <a
+                    class="home-button"
+                    href="{% url 'courses_list' %}"
+            >
+                ← На главную
+            </a>
+        </div>
+
+        <h1>{{ course.title }}</h1>
+
+        {% if course.image %}
+            <img
+                    class="course-image"
+                    src="{{ course.image.url }}"
+                    alt="{{ course.title }}">
+        {% endif %}
+
+        <p>
+            <span class="label">Описание:</span><br>
+            {{ course.description }}
+        </p>
+
+        <div class="tags">
+            <span class="label">Категории:</span><br>
+
+            {% for category in course.categories.all %}
+                <span class="tag">
+                {{ category.name }}
+            </span>
+            {% empty %}
+                Категории не указаны.
+            {% endfor %}
+        </div>
+
+        <p class="label authors-label">
+            Авторы:
+        </p>
+
+        <div class="authors">
+            {% for author in course.authors.all %}
+                <div class="author">
+                    <a
+                            class="author-avatar-link"
+                            href="{{ author.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Перейти на страницу автора {{ author.name }} на stepik"
+                    >
+                        {% if author.avatar %}
+                            <img
+                                    class="author-avatar"
+                                    src="{{ author.avatar.url }}"
+                                    alt="Фотография автора {{ author.name }}"
+                            >
+                        {% else %}
+                            <span
+                                    class="author-initials"
+                                    aria-hidden="true"
+                            >
+                            {{ author.initials }}
+                        </span>
+                        {% endif %}
+                    </a>
+
+                    <a
+                            class="author-name"
+                            href="{{ author.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                    >
+                        {{ author.name }}
+                    </a>
+                </div>
+            {% empty %}
+                <p>Авторы не указаны.</p>
+            {% endfor %}
+        </div>
+
+        <p class="price">
+            <span class="label">Цена:</span>
+            {{ course.display_price }}
+        </p>
+
+        <div class="buttons">
+            <a
+                    class="button"
+                    href="{{ course.url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+            >
+                Перейти на stepik
+            </a>
+        </div>
+    </div>
+{% endblock %}

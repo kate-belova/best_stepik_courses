@@ -1,0 +1,181 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Предложить курс
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Предложить курс</h1>
+
+    <p class="intro">
+        Знаете хороший курс на stepik, которого ещё нет в каталоге?
+        Расскажите о нём.
+    </p>
+
+    <div class="form-card">
+
+        {% if sent %}
+            <div class="success-message">
+                Спасибо! Ваше предложение принято.
+            </div>
+        {% endif %}
+
+        <form
+                method="post"
+                action="{% url 'suggestion_create' %}"
+                novalidate
+        >
+            {% csrf_token %}
+
+            <section class="form-section">
+                <h2 class="form-section-title">
+                    О курсе
+                </h2>
+
+                <div class="form-field">
+                    <label for="{{ form.title.id_for_label }}">
+                        {{ form.title.label }}
+                        <span class="required-mark">*</span>
+                    </label>
+
+                    {{ form.title }}
+
+                    {% if form.title.errors %}
+                        <ul class="error-list">
+                            {% for error in form.title.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form-field">
+                    <label for="{{ form.url.id_for_label }}">
+                        {{ form.url.label }}
+                        <span class="required-mark">*</span>
+                    </label>
+
+                    {{ form.url }}
+
+                    {% if form.url.errors %}
+                        <ul class="error-list">
+                            {% for error in form.url.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form-field">
+                    <label for="{{ form.comment.id_for_label }}">
+                        {{ form.comment.label }}
+                        <span class="optional">необязательно</span>
+                    </label>
+
+                    {{ form.comment }}
+
+                    {% if form.comment.errors %}
+                        <ul class="error-list">
+                            {% for error in form.comment.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2 class="form-section-title">
+                    О вас
+                </h2>
+
+                <p class="form-section-description">
+                    Контактные данные указывать необязательно.
+                    Оставьте их только если хотите, чтобы с вами могли связаться.
+                </p>
+
+                <div class="form-field">
+                    <label for="{{ form.name.id_for_label }}">
+                        {{ form.name.label }}
+                        <span class="optional">необязательно</span>
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+                        <ul class="error-list">
+                            {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form-field">
+                    <label for="{{ form.email.id_for_label }}">
+                        {{ form.email.label }}
+                        <span class="optional">необязательно</span>
+                    </label>
+
+                    {{ form.email }}
+
+                    {% if form.email.errors %}
+                        <ul class="error-list">
+                            {% for error in form.email.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form-field">
+                    <label for="{{ form.telegram.id_for_label }}">
+                        {{ form.telegram.label }}
+                        <span class="optional">необязательно</span>
+                    </label>
+
+                    {{ form.telegram }}
+
+                    {% if form.telegram.errors %}
+                        <ul class="error-list">
+                            {% for error in form.telegram.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="checkbox-field">
+                    <label
+                            class="checkbox-label"
+                            for="{{ form.personal_data.id_for_label }}"
+                    >
+                        {{ form.personal_data }}
+                        <span>
+                            {{ form.personal_data.label }}
+                        </span>
+                    </label>
+
+                    {% if form.personal_data.errors %}
+                        <ul class="error-list">
+                            {% for error in form.personal_data.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </section>
+
+            <button
+                    class="submit-button"
+                    type="submit"
+            >
+                Отправить предложение
+            </button>
+        </form>
+    </div>
+{% endblock %}

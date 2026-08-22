@@ -1,0 +1,205 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Лучшие курсы на stepik
+{% endblock %}
+
+{% block description %}
+    Каталог лучших курсов на stepik по программированию, тестированию и другим
+    IT-направлениям.
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Лучшие курсы на stepik'e</h1>
+
+    <form method="get" class="course-filter">
+        <div class="filter-row">
+            <div class="filter-field search-field">
+
+                <div class="search-input-row">
+                    <label for="{{ form.query.id_for_label }}">
+                        {{ form.query.label }}
+                    </label>
+                    {{ form.query }}
+                </div>
+
+                <span class="filter-help">
+            {{ form.query.help_text }}
+        </span>
+
+            </div>
+        </div>
+
+        <div class="filter-row">
+            <span class="price-filter-label">Цена:</span>
+
+            <div class="filter-field">
+                <label for="{{ form.min_price.id_for_label }}">от</label>
+                {{ form.min_price }}
+            </div>
+
+            <div class="filter-field">
+                <label for="{{ form.max_price.id_for_label }}">до</label>
+                {{ form.max_price }}
+            </div>
+
+            <div class="filter-field">
+                <label for="{{ form.price_type.id_for_label }}">Тип</label>
+                {{ form.price_type }}
+            </div>
+        </div>
+
+        <div class="ordering-row">
+            <label for="{{ form.ordering.id_for_label }}">Сортировка</label>
+            {{ form.ordering }}
+
+            <button class="filter-button" type="submit">Найти</button>
+
+            {% if request.GET.query or request.GET.min_price or request.GET.max_price or request.GET.price_type or request.GET.ordering %}
+                <a class="reset-filter" href="{% url 'courses_list' %}">
+                    Сбросить
+                </a>
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="suggestion-link">
+        <a
+                class="suggestion-button"
+                href="{% url 'suggestion_create' %}"
+                target="_blank"
+                rel="noopener noreferrer"
+        >
+            Предложить курс
+        </a>
+    </div>
+
+    <div class="courses-grid">
+        {% for course in courses %}
+            <article class="course">
+
+                <div class="course-header">
+
+                    {% if course.image %}
+                        <a
+                                class="course-image-link"
+                                href="{% url "course_detail" course.slug %}"
+                                target="_blank"
+                                aria-label="Открыть страницу курса {{ course.title }}"
+                        >
+                            <img
+                                    class="course-image"
+                                    src="{{ course.image.url }}"
+                                    alt="Обложка курса {{ course.title }}"
+                            >
+                        </a>
+                    {% endif %}
+
+                    <div class="course-info">
+
+                        <h2 class="course-title">
+                            <a
+                                    href="{% url 'course_detail' course.slug %}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                            >
+                                {{ course.title }}
+                            </a>
+                        </h2>
+
+                        <div>
+                            <span class="label">Категории:</span>
+
+                            {% for category in course.categories.all %}
+                                <span class="tag">
+                                {{ category.name }}
+                            </span>
+                            {% empty %}
+                                <span>Категории не указаны</span>
+                            {% endfor %}
+                        </div>
+
+                        <div>
+                            <p class="label authors-label">
+                                Авторы:
+                            </p>
+
+                            <div class="authors">
+
+                                {% for author in course.authors.all %}
+                                    <div class="author">
+
+                                        <a
+                                                class="author-avatar-link"
+                                                href="{{ author.url }}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                aria-label="Перейти на страницу автора {{ author.name }} на stepik"
+                                        >
+
+                                            {% if author.avatar %}
+                                                <img
+                                                        class="author-avatar"
+                                                        src="{{ author.avatar.url }}"
+                                                        alt="Фотография автора {{ author.name }}"
+                                                >
+                                            {% else %}
+                                                <span
+                                                        class="author-avatar author-avatar-placeholder"
+                                                        aria-hidden="true"
+                                                >
+                                                {{ author.initials }}
+                                            </span>
+                                            {% endif %}
+
+                                        </a>
+
+                                        <a
+                                                class="author-name"
+                                                href="{{ author.url }}"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                        >
+                                            {{ author.name }}
+                                        </a>
+
+                                    </div>
+                                {% empty %}
+                                    <span>Авторы не указаны</span>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <p class="description">
+                    <span class="label">Описание:</span>
+                    {{ course.description }}
+                </p>
+
+                <p class="price">
+                    <span class="label">Цена:</span>
+                    {{ course.display_price }}
+                </p>
+
+                <a
+                        class="course-button"
+                        href="{{ course.url }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                >
+                    Перейти на stepik
+                </a>
+
+            </article>
+        {% empty %}
+            {% if form.query.value or form.min_price.value or form.max_price.value or form.price_type.value %}
+                <p>По заданным параметрам курсы не найдены.</p>
+            {% else %}
+                <p>Курсы пока не добавлены.</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
