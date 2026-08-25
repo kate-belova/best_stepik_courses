@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "courses.apps.CoursesConfig",
     "suggestions.apps.SuggestionsConfig",
+    "django.contrib.sitemaps",
 ]
 
 MIDDLEWARE = [
