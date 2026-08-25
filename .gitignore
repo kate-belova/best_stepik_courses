@@ -18,5 +18,7 @@ db.sqlite3
 /media/*
 !/media/.gitkeep
 
+staticfiles/
+
 # Misc
 *.log
