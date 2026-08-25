@@ -34,8 +34,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER")
 
-ALLOWED_HOSTS = []
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
