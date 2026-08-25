@@ -24,15 +24,16 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
-EMAIL_HOST = "smtp.example.com"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.jino.ru"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER")
 
 INSTALLED_APPS = [
