@@ -25,7 +25,9 @@
         <meta name="robots" content="index, follow">
     {% endblock %}
 
-    {% block canonical %}{% endblock %}
+    {% block canonical %}
+        <link rel="canonical" href="https://stepik-best.org{{ request.path }}">
+    {% endblock %}
 
     <link
             rel="stylesheet"
