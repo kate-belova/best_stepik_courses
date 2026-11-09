@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
+from django.http import HttpResponse
 from django.urls import path
 
 from courses.sitemaps import StaticViewSitemap, CourseSitemap
@@ -14,6 +15,15 @@ sitemaps = {
 }
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path(
+        "robots.txt",
+        lambda request: HttpResponse(
+            "User-agent: *\n"
+            "Allow: /\n"
+            "Sitemap: https://stepik-best.org/sitemap.xml\n",
+            content_type="text/plain",
+        ),
+    ),
     path("", courses_list, name="courses_list"),
     path(
         "suggest-course/",
